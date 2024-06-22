@@ -1,0 +1,231 @@
+'var' can be declared again an can be get of its value from outside of scope
+
+------------>
+
+    'let' and 'const' work normally
+
+------------------------------------------------------------------------------------------------------
+
+----------->
+
+    ${ name } -> syntax is come with es6
+
+-------------------------------------------------------------------------------------------------------
+
+    function getBook(title, auther) {
+        return {
+            title: title,
+            auther: auther
+        }
+    }
+
+----->
+
+    function getBook(title, auther) {
+        return {
+            title,
+            auther
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------
+
+    let name = items.name;
+let age = items.age;
+
+--------->
+
+const { name, age } = items;
+
+------------------------------------------------------------------------------------------------------------
+
+    function sayName() {
+        console.log("dfsdfg");
+    }
+
+var sayAge = function () {
+    console.log("dfgsdfgsdfg");
+}
+
+sayName();
+sayAge();
+
+-------->
+
+const sayName = () => console.log("dfgsdfgsdfg");
+
+
+const sayAge = () => {
+    console.log("dfgsdfgsdfg");
+}
+
+sayName();
+
+---------------------------------------------------------------------------------------------------------------
+
+var user = {
+    name: "Ed",
+    age: 25,
+    sayName: function () {
+        console.log("My name is " + this.name);
+        var that = this;
+        var fullName = function () {
+            console.log("My name is " + that.name + " and my age is " + that.age)
+        }
+        fullName();
+    }
+}
+
+user.sayName();
+
+------->
+
+const user = {
+    name: "Ed",
+    age: 25,
+    sayName: function () {
+        console.log(`My name is ${this.name}`);
+        const fullName = () => {
+            console.log(`My name is ${this.name} and my age is ${this.age}`);
+        }
+        fullName();
+    }
+}
+
+user.sayName();
+
+---------------------------------------------------------------------------------------------------------------------
+
+    function multiply(x, y) {
+        var a = x || 1;
+        var b = y || 1;
+        console.log(a * b);
+    }
+multiply(20, 56);
+
+-------->
+
+const add = (c = 1, d = 1) => {
+    console.log(c + d);
+}
+
+add();
+
+--------------------------------------------------------------------------------------------------------------------
+--------->
+    ----------forEach--------
+        shoppingList.forEach((product, index) => {
+            console.log(`The index is ${index} and the product is ${product}`);
+        });
+
+----------Map-----------
+const newList = shoppingList.map((item) => {
+    return item + "new";
+});
+const newList1 = shoppingList.map(item => item + "new");
+console.log(newList1);
+
+----------filter------------
+const filterList = shoppingList.filter(item => {
+    return item !== "Eggs";
+})
+console.log(filterList);
+
+-----------------------------------------------------------------------------------------------------------------------
+
+    function Person(name, age, hairColor) {
+        this.name = name;
+        this.age = age;
+        this.hairColor = hairColor;
+    }
+
+Person.prototype.sayName = function () {
+    console.log("My name is " + this.name);
+}
+
+function Ed(occupation, hobbies, name, age, hairColor) {
+    Person.call(this, name, age, hairColor);
+    this.occupation = occupation;
+    this.hobbies = hobbies;
+}
+
+Ed.prototype = Object.create(Person.prototype);
+
+const person = new Ed("Dev", "Dancing", "Edwin", 25, "notNice");
+
+person.sayName();
+
+console.log(person);
+
+------------------>
+
+    class ShoppingList {
+        constructor(items, number) {
+            this.items = items;
+            this.number = number
+        }
+        sayList() {
+            console.log(this.items);
+        }
+    }
+
+const myList = new ShoppingList(["Milk", "Choco", "Redbull"], 3);
+
+class Product extends ShoppingList {
+    constructor(items, number, amount, cost) {
+        super(items, number);
+        this.amount = amount;
+        this.cost = cost;
+    }
+}
+
+const product = new Product(["Milk", "Choco", "Redbull"], 3, 2, 20);
+
+product.sayList();
+
+----------------------------------------------------------------------------------
+
+    console.log('start');
+function getDate(data, callback) {
+    setTimeout(() => {
+        console.log('reading from the database');
+        callback({ data: data })
+    }, 2000)
+}
+
+getDate(5, function (data) {
+    console.log(data);
+})
+console.log('finish');
+
+-------------->
+
+const prom = new Promise((resolve, reject) => {
+    //Here is sync
+    setTimeout(() => {
+        // resolve({ user: "Ed", pass: "asfasdfasdfasdf" });
+        reject(new Error("something went wrong"))
+    }, 2000);
+});
+
+prom.then(data => {
+    console.log(data);
+}).catch(err => console.log(err));
+
+-------------------------------------------------------------------------------------
+
+    Promise.resolve(1).then(function () { console.log('promise resolve') })
+setTimeout(() => console.log('timeout'), 0);
+setImmediate(() => console.log('immediate'));
+process.nextTick(() => console.log('nextTick'));
+console.log('current event loop');
+
+----Output -----
+    // current event loop
+    // nextTick
+    // promise resolve
+    // timeout
+    // immediate
+
+    ----------------------------------------------------------------------------------------
+
